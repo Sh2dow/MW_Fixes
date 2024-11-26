@@ -33,9 +33,12 @@ jobs:
 
       - name: Copy MWFixes.ini to OutDir
         run: |
-          mkdir -p bin\Release\scripts
+          if (!(Test-Path -Path bin\Release\scripts)) {
+              mkdir bin\Release\scripts
+          }
           copy MWFixes.ini bin\Release\scripts\MWFixes.ini
-
+        shell: pwsh
+      
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
