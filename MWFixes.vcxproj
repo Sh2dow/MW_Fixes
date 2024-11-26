@@ -22,32 +22,32 @@
     <ProjectGuid>{AAF74379-24F2-4893-A5B1-35C4CBDD0D1D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>MWFixes</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -127,6 +127,7 @@ echo f | xcopy $(SolutionDir)Readme.txt $(SolutionDir)bin\$(Configuration)\Readm
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;MWFIXES_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -158,13 +159,30 @@ echo f | xcopy $(SolutionDir)Readme.txt $(SolutionDir)bin\$(Configuration)\Readm
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\dllmain.cpp" />
+    <ClCompile Include="src\dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MWFixes.ini">
       <DeploymentContent>true</DeploymentContent>
       <FileType>Document</FileType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".github\workflows\msbuild.yml" />
+    <Content Include="README.md" />
+    <Content Include="Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\CPatch.h" />
+    <ClInclude Include="include\IniReader\IniReader.h" />
+    <ClInclude Include="include\IniReader\ini_parser.hpp" />
+    <ClInclude Include="include\injector\assembly.hpp" />
+    <ClInclude Include="include\injector\calling.hpp" />
+    <ClInclude Include="include\injector\gvm\gvm.hpp" />
+    <ClInclude Include="include\injector\gvm\translator.hpp" />
+    <ClInclude Include="include\injector\hooking.hpp" />
+    <ClInclude Include="include\injector\injector.hpp" />
+    <ClInclude Include="include\injector\utility.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
