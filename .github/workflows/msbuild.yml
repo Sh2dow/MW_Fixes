@@ -33,10 +33,20 @@ jobs:
 
       - name: Copy MWFixes.ini to OutDir
         run: |
-          if (!(Test-Path -Path bin\Release\scripts)) {
-              mkdir bin\Release\scripts
+          if (!(Test-Path -Path "bin\Release\scripts")) {
+              mkdir "bin\Release\scripts"
+              Write-Host "Directory created: bin\Release\scripts"
+          } else {
+              Write-Host "Directory already exists: bin\Release\scripts"
           }
-          copy MWFixes.ini bin\Release\scripts\MWFixes.ini
+
+          if (Test-Path -Path "MWFixes.ini") {
+              copy "MWFixes.ini" "bin\Release\scripts\MWFixes.ini"
+              Write-Host "Copied MWFixes.ini to bin\Release\scripts"
+          } else {
+              Write-Host "MWFixes.ini not found. Copy failed."
+              exit 1
+          }
         shell: pwsh
       
       - name: Upload artifacts
@@ -45,7 +55,6 @@ jobs:
           name: MWFixes-artifacts
           path: |
             bin\Release\scripts\*
-            MWFixes.ini
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
