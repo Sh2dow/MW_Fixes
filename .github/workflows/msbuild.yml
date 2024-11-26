@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true  # Ensures submodules are fetched
-        
+
       - name: Update submodules
         run: git submodule update --init --recursive
 
@@ -31,8 +31,21 @@ jobs:
       - name: Build with Windows 10 SDK
         run: msbuild MWFixes.sln /p:Configuration=Release /p:Platform=x86 /p:PlatformToolset=v143
 
+      - name: Copy MWFixes.ini to output directory
+        run: |
+          mkdir -p Release
+          copy MWFixes.ini Release\MWFixes.ini
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: MWFixes-artifacts
           path: Release\*.*
+
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: Release\*.*  # Attach all artifacts, including MWFixes.ini
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
