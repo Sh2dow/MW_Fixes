@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          submodules: true  # Ensures submodules are fetched
+          submodules: true
 
       - name: Update submodules
         run: git submodule update --init --recursive
@@ -31,37 +31,28 @@ jobs:
       - name: Build with Windows 10 SDK
         run: msbuild MWFixes.sln /p:Configuration=Release /p:Platform=x86 /p:PlatformToolset=v143
 
-      - name: Copy MWFixes.ini to OutDir
+      - name: Prepare scripts folder
         run: |
-          if (!(Test-Path -Path "bin\Release\scripts")) {
-              mkdir "bin\Release\scripts"
-              Write-Host "Directory created: bin\Release\scripts"
-          } else {
-              Write-Host "Directory already exists: bin\Release\scripts"
-          }
-
-          if (Test-Path -Path "MWFixes.ini") {
-              copy "MWFixes.ini" "bin\Release\scripts\MWFixes.ini"
-              Write-Host "Copied MWFixes.ini to bin\Release\scripts"
-          } else {
-              Write-Host "MWFixes.ini not found. Copy failed."
-              exit 1
-          }
+          mkdir -Force bin\Release\scripts
+          copy "bin\Release\MWFixes.asi" "bin\Release\scripts\MWFixes.asi"
+          copy "MWFixes.ini" "bin\Release\scripts\MWFixes.ini"
         shell: pwsh
-      
-      - name: Upload artifacts
+
+      - name: Create ZIP with scripts folder
+        run: |
+          Compress-Archive -Path bin\Release\scripts\* -DestinationPath MWFixes.zip
+        shell: pwsh
+
+      - name: Upload ZIP as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MWFixes-artifacts
-          path: |
-            bin\Release\scripts\*
+          name: MWFixes-Release
+          path: MWFixes.zip
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: |
-            bin\Release\scripts\*
-            MWFixes.ini
+          artifacts: MWFixes.zip
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
