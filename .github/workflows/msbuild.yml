@@ -34,7 +34,6 @@ jobs:
       - name: Prepare scripts folder
         run: |
           mkdir -Force bin\Release\scripts
-          copy "bin\Release\scripts\MWFixes.asi" "bin\Release\scripts\MWFixes.asi"
           copy "MWFixes.ini" "bin\Release\scripts\MWFixes.ini"
         shell: pwsh
 
